@@ -1,5 +1,7 @@
 package com.informatorio.infomerchandising.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,13 @@ public class City {
     @Column(nullable = false, length = 200)
     private String name;
 
+    @Transient
+    private Integer users;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "city", orphanRemoval = true)
+    private List<User> userList = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
@@ -29,5 +38,17 @@ public class City {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getUsers() {
+        return userList.size();
+    }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 }
