@@ -46,8 +46,12 @@ public class CityService {
 	public ResponseEntity<?> findById(Long id) {
 		var city = findCity(id);
 		return (city != null) ?
-			ResponseEntity.ok(city)
-			: new ResponseEntity<>("city not found", HttpStatus.NOT_FOUND);
+			ResponseEntity.ok(
+				city
+			) : new ResponseEntity<>(
+				"city not found",
+			HttpStatus.NOT_FOUND
+		);
 	}
 
 	public ResponseEntity<?> updateById(Long id, CityRequest request) {
@@ -56,22 +60,35 @@ public class CityService {
 			if (ValidationUtils.stringLengthValidation(request.getName(), 3, 200)) {
 				city.setName(request.getName());
 			} else {
-				return new ResponseEntity<>("name", HttpStatus.CONFLICT); // name debe estar entre 3 y 200 carac
+				return new ResponseEntity<>(
+					"city name must be between 3 and 200 characters",
+					HttpStatus.CONFLICT
+				);
 			}
 
-			return ResponseEntity.ok(cityRepository.save(city));
+			return ResponseEntity.ok(
+				cityRepository.save(city)
+			);
 		}
 
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND); // city 404
+		return new ResponseEntity<>(
+			"city not found",
+			HttpStatus.NOT_FOUND
+		);
 	}
 
 	public ResponseEntity<?> deleteById(Long id) {
 		var city = findCity(id);
 		if (city != null) {
 			cityRepository.delete(city);
-			return ResponseEntity.ok(city);
+			return ResponseEntity.ok(
+				city
+			);
 		}
 
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND); // city 404
+		return new ResponseEntity<>(
+			"city not found",
+			HttpStatus.NOT_FOUND
+		);
 	}
 }
