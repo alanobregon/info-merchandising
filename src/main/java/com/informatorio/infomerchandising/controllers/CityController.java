@@ -13,40 +13,40 @@ import javax.validation.Valid;
 @RequestMapping(value = "/cities")
 public class CityController {
 
-    private final CityService cityService;
+	private final CityService cityService;
 
-    @Autowired
-    public CityController(CityService cityService) {
-        this.cityService = cityService;
-    }
+	@Autowired
+	public CityController(CityService cityService) {
+		this.cityService = cityService;
+	}
 
-    @GetMapping
-    public ResponseEntity<?> findAll(@RequestParam(required = false) String name) {
-        if (name != null)
-            return ResponseEntity.ok(cityService.findAllByNameContaining(name));
-        return ResponseEntity.ok(cityService.findAll());
-    }
+	@GetMapping
+	public ResponseEntity<?> findAll(@RequestParam(required = false) String name) {
+		if (name != null)
+			return ResponseEntity.ok(cityService.findAllByNameContaining(name));
+		return ResponseEntity.ok(cityService.findAll());
+	}
 
-    @PostMapping
-    public ResponseEntity<?> save(@Valid @RequestBody CityRequest request) {
-        return ResponseEntity.ok(cityService.save(request));
-    }
+	@PostMapping
+	public ResponseEntity<?> save(@Valid @RequestBody CityRequest request) {
+		return ResponseEntity.ok(cityService.save(request));
+	}
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<?> findById(@PathVariable("id") Long id) {
-        var data = cityService.findById(id);
-        return (data != null) ? ResponseEntity.ok(data) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
+		var data = cityService.findById(id);
+		return (data != null) ? ResponseEntity.ok(data) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<?> updateById(@PathVariable("id") Long id, @RequestBody CityRequest request) {
-        var data = cityService.updateById(id, request);
-        return (data != null) ? ResponseEntity.ok(data) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<?> updateById(@PathVariable("id") Long id, @RequestBody CityRequest request) {
+		var data = cityService.updateById(id, request);
+		return (data != null) ? ResponseEntity.ok(data) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteById(@PathVariable("id") Long id) {
-        var data = cityService.deleteById(id);
-        return (data != null) ? ResponseEntity.ok(data) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<?> deleteById(@PathVariable("id") Long id) {
+		var data = cityService.deleteById(id);
+		return (data != null) ? ResponseEntity.ok(data) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
 }

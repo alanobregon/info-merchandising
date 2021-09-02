@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CityRepository extends CrudRepository<City, Long> {
-    Iterable<?> findByNameContaining(String name);
+	Iterable<?> findByNameContaining(String name);
 }

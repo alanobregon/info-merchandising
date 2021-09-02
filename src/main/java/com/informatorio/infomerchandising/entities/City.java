@@ -10,45 +10,45 @@ import java.util.List;
 @Table(name = "cities")
 public class City {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false, length = 200)
-    private String name;
+	@Column(nullable = false, length = 200)
+	private String name;
 
-    @Transient
-    private Integer users;
+	@Transient
+	private Integer users;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "city", orphanRemoval = true)
-    private List<User> userList = new ArrayList<>();
+	@JsonIgnore
+	@OneToMany(mappedBy = "city", orphanRemoval = true)
+	private List<User> userList = new ArrayList<>();
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Integer getUsers() {
-        return userList.size();
-    }
+	public Integer getUsers() {
+		return userList.size();
+	}
 
-    public List<User> getUserList() {
-        return userList;
-    }
+	public List<User> getUserList() {
+		return userList;
+	}
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
-    }
+	public void setUserList(List<User> userList) {
+		this.userList = userList;
+	}
 }
