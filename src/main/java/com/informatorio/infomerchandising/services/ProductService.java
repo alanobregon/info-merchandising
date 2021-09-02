@@ -24,23 +24,31 @@ public class ProductService {
 	}
 
 	public ResponseEntity<?> findAll() {
-		return ResponseEntity.ok(productRepository.findAll());
+		return ResponseEntity.ok(
+			productRepository.findAll()
+		);
 	}
 
 	public ResponseEntity<?> findAllByPublishedTrue() {
-		return ResponseEntity.ok(productRepository.findAllByPublishedTrue());
+		return ResponseEntity.ok(
+			productRepository.findAllByPublishedTrue()
+		);
 	}
 
 	public ResponseEntity<?> findAllByNameContaining(String name) {
-		return ResponseEntity.ok(productRepository.findAllByNameContaining(name));
+		return ResponseEntity.ok(
+			productRepository.findAllByNameContaining(name)
+		);
 	}
 
 	public ResponseEntity<?> findAllByNameContainingAndPublishedTrue(String name) {
-		return ResponseEntity.ok(productRepository.findAllByNameContainingAndPublishedTrue(name));
+		return ResponseEntity.ok(
+			productRepository.findAllByNameContainingAndPublishedTrue(name)
+		);
 	}
 
 	public ResponseEntity<?> save(ProductRequest request) {
-		if (request.getContent() != null)
+		if (request.getContent() != null) {
 			return new ResponseEntity<>(
 				productRepository.save(new Product(
 					request.getName(),
@@ -50,6 +58,7 @@ public class ProductService {
 					request.getPublished())
 				), HttpStatus.CREATED
 			);
+		}
 
 		return new ResponseEntity<>(
 			productRepository.save(new Product(
@@ -64,8 +73,12 @@ public class ProductService {
 	public ResponseEntity<?> findById(Long id) {
 		var product = findProduct(id);
 		return (product != null) ?
-			ResponseEntity.ok(product)
-			: new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			ResponseEntity.ok(
+				product
+			) : new ResponseEntity<>(
+				"product not found",
+			HttpStatus.NOT_FOUND
+		);
 	}
 
 	public ResponseEntity<?> updateById(Long id, ProductRequest request) {
@@ -75,7 +88,10 @@ public class ProductService {
 				if (ValidationUtils.stringLengthValidation(request.getName(), 5, 50)) {
 					product.setName(request.getName());
 				} else {
-					return new ResponseEntity<>("name", HttpStatus.CONFLICT); // Nombre debe estar entre 3 y 50
+					return new ResponseEntity<>(
+						"product name must be between 5 and 50 characters",
+						HttpStatus.CONFLICT
+					);
 				}
 			}
 
@@ -83,7 +99,10 @@ public class ProductService {
 				if (ValidationUtils.stringLengthValidation(request.getDescription(), 20, 200)) {
 					product.setDescription(request.getDescription());
 				} else {
-					return new ResponseEntity<>("descr", HttpStatus.CONFLICT); // Descripcion debe estar entre 20 y 200
+					return new ResponseEntity<>(
+						"product description must be between 20 and 200 characters",
+						HttpStatus.CONFLICT
+					);
 				}
 			}
 
@@ -91,7 +110,10 @@ public class ProductService {
 				if (ValidationUtils.positiveNumber(request.getPrice())) {
 					product.setPrice(request.getPrice());
 				} else {
-					return new ResponseEntity<>("price", HttpStatus.CONFLICT); // Precio debe ser positivo
+					return new ResponseEntity<>(
+						"product price must be positive number",
+						HttpStatus.CONFLICT
+					);
 				}
 			}
 
@@ -99,7 +121,10 @@ public class ProductService {
 				if (ValidationUtils.stringLengthValidation(request.getContent(), 100, 1000)) {
 					product.setContent(request.getContent());
 				} else {
-					return new ResponseEntity<>("content", HttpStatus.CONFLICT); // El contenido debe estar entre 100 y 1000
+					return new ResponseEntity<>(
+						"product content must be between 100 and 1000 characters",
+						HttpStatus.CONFLICT
+					);
 				}
 			}
 
@@ -107,19 +132,29 @@ public class ProductService {
 				product.setPublished(request.getPublished());
 			}
 
-			return ResponseEntity.ok(productRepository.save(product));
+			return ResponseEntity.ok(
+				productRepository.save(product)
+			);
 		}
 
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(
+			"product not found",
+			HttpStatus.NOT_FOUND
+		);
 	}
 
 	public ResponseEntity<?> deleteById(Long id) {
 		var product = findProduct(id);
 		if (product != null) {
 			productRepository.delete(product);
-			return ResponseEntity.ok(product);
+			return ResponseEntity.ok(
+				product
+			);
 		}
 
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(
+			"product not found",
+			HttpStatus.NOT_FOUND
+		);
 	}
 }
