@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
-    Iterable<?> findAllByCity(City city);
-    Iterable<?> findAllByCreatedAtAfter(LocalDate localDate);
-    Iterable<?> findAllByCityAndCreatedAtAfter(City city, LocalDate localDate);
+	Iterable<?> findAllByCity(City city);
+	Iterable<?> findAllByCreatedAtAfter(LocalDate localDate);
+	Iterable<?> findAllByCityAndCreatedAtAfter(City city, LocalDate localDate);
 }
