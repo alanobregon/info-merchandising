@@ -3,7 +3,9 @@ package com.informatorio.infomerchandising.services;
 import com.informatorio.infomerchandising.dtos.CityRequest;
 import com.informatorio.infomerchandising.entities.City;
 import com.informatorio.infomerchandising.repositories.CityRepository;
+import com.informatorio.infomerchandising.utils.ValidationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,41 +19,59 @@ public class CityService {
 		this.cityRepository = cityRepository;
 	}
 
-	public Iterable<?> findAll() {
-		return cityRepository.findAll();
-	}
-
-	public Iterable<?> findAllByNameContaining(String name) {
-		return cityRepository.findByNameContaining(name);
-	}
-
-	public City save(CityRequest request) {
-		var city = new City();
-		city.setName(request.getName());
-
-		return cityRepository.save(city);
-	}
-
-	public City findById(Long id) {
+	private City findCity(Long id) {
 		return cityRepository.findById(id).orElse(null);
 	}
 
-	public City updateById(Long id, CityRequest request) {
-		var data = findById(id);
-		if (data != null) {
-			if (request.getName() != null)
-				data.setName(request.getName());
-
-			cityRepository.save(data);
-		}
-
-		return data;
+	public ResponseEntity<?> findAll() {
+		return ResponseEntity.ok(
+			cityRepository.findAll()
+		);
 	}
 
-	public City deleteById(Long id) {
-		var data = findById(id);
-		if (data != null)
-			cityRepository.delete(data);
-		return data;
+	public ResponseEntity<?> findAllByNameContaining(String name) {
+		return ResponseEntity.ok(
+			cityRepository.findByNameContaining(name)
+		);
+	}
+
+	public ResponseEntity<?> save(CityRequest request) {
+		return ResponseEntity.ok(
+			cityRepository.save(new City(
+				request.getName()
+			))
+		);
+	}
+
+	public ResponseEntity<?> findById(Long id) {
+		var city = findCity(id);
+		return (city != null) ?
+			ResponseEntity.ok(city)
+			: new ResponseEntity<>("city not found", HttpStatus.NOT_FOUND);
+	}
+
+	public ResponseEntity<?> updateById(Long id, CityRequest request) {
+		var city = findCity(id);
+		if (city != null) {
+			if (ValidationUtils.stringLengthValidation(request.getName(), 3, 200)) {
+				city.setName(request.getName());
+			} else {
+				return new ResponseEntity<>("name", HttpStatus.CONFLICT); // name debe estar entre 3 y 200 carac
+			}
+
+			return ResponseEntity.ok(cityRepository.save(city));
+		}
+
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND); // city 404
+	}
+
+	public ResponseEntity<?> deleteById(Long id) {
+		var city = findCity(id);
+		if (city != null) {
+			cityRepository.delete(city);
+			return ResponseEntity.ok(city);
+		}
+
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND); // city 404
 	}
 }

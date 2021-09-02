@@ -24,6 +24,15 @@ public class City {
 	@OneToMany(mappedBy = "city", orphanRemoval = true)
 	private List<User> userList = new ArrayList<>();
 
+	public City() {
+
+	}
+
+	public City(String name) {
+		this.name = name;
+		this.userList = new ArrayList<>();
+	}
+
 	public Long getId() {
 		return id;
 	}
