@@ -37,7 +37,9 @@ public class User {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private City city;
 
-	public User() {}
+	public User() {
+
+	}
 
 	public User(String firstname, String lastname, String email, String password, City city) {
 		this.firstname = firstname;
