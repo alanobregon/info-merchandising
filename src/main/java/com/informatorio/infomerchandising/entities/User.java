@@ -37,6 +37,10 @@ public class User {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private City city;
 
+	@JsonIgnore
+	@OneToOne(mappedBy = "user")
+	private Cart cart;
+
 	public User() {
 
 	}
@@ -95,5 +99,13 @@ public class User {
 
 	public void setCity(City city) {
 		this.city = city;
+	}
+
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
 	}
 }

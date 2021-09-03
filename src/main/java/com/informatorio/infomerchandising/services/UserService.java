@@ -1,8 +1,10 @@
 package com.informatorio.infomerchandising.services;
 
 import com.informatorio.infomerchandising.dtos.UserRequest;
+import com.informatorio.infomerchandising.entities.Cart;
 import com.informatorio.infomerchandising.entities.City;
 import com.informatorio.infomerchandising.entities.User;
+import com.informatorio.infomerchandising.repositories.CartRepository;
 import com.informatorio.infomerchandising.repositories.CityRepository;
 import com.informatorio.infomerchandising.repositories.UserRepository;
 import com.informatorio.infomerchandising.utils.ValidationUtils;
@@ -16,13 +18,15 @@ import java.time.LocalDate;
 @Service
 public class UserService {
 
+	private final CartRepository cartRepository;
 	private final CityRepository cityRepository;
 	private final UserRepository userRepository;
 
 	@Autowired
-	public UserService(CityRepository cityRepository, UserRepository userRepository) {
-		this.cityRepository = cityRepository;
-		this.userRepository = userRepository;
+	public UserService(CartRepository cart, CityRepository city, UserRepository user) {
+		this.cartRepository = cart;
+		this.cityRepository = city;
+		this.userRepository = user;
 	}
 
 	private City findCity(Long id) {
@@ -83,14 +87,20 @@ public class UserService {
 					HttpStatus.CONFLICT
 				);
 
-			return new ResponseEntity<>(
-				userRepository.save(new User(
+			var user = userRepository.save(
+				new User(
 					request.getFirstname(),
 					request.getLastname(),
 					request.getEmail(),
 					request.getPassword(),
 					city
-				)), HttpStatus.CREATED
+				)
+			);
+
+			cartRepository.save(new Cart(user));
+			return new ResponseEntity<>(
+				user,
+				HttpStatus.CREATED
 			);
 		}
 
