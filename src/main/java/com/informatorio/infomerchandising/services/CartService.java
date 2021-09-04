@@ -40,6 +40,19 @@ public class CartService {
 		return productRepository.findById(id).orElse(null);
 	}
 
+	private Detail findDetailByCartAndProduct(Cart cart, Product product) {
+		return detailRepository
+			.findByCartAndProduct(cart, product)
+			.orElse(null);
+	}
+
+	private ResponseEntity<?> updateProductQuantity(Detail detail, Long quantity) {
+		detail.setQuantity(quantity);
+		return ResponseEntity.ok(
+			detailRepository.save(detail)
+		);
+	}
+
 	public ResponseEntity<?> findCartByUser(Long id) {
 		var cart = findCartByUserId(id);
 		return (cart != null) ?
@@ -50,20 +63,25 @@ public class CartService {
 		);
 	}
 
-	public ResponseEntity<?> addProductToCart(Long user, DetailRequest request) {
+	public ResponseEntity<?> addOrUpdateProductToCart(Long user, DetailRequest request) {
 		var cart = findCartByUserId(user);
 		var product = findProductById(request.getProduct());
 		if (cart != null) {
 			if (product != null) {
 				if (product.getPublished()) {
-					return new ResponseEntity<>(
-						detailRepository.save(
-							new Detail(
-								product,
-								cart,
-								request.getQuantity()
-							)), HttpStatus.CREATED
-					);
+					var detail = findDetailByCartAndProduct(cart, product);
+					if (detail != null) {
+						return updateProductQuantity(detail, request.getQuantity());
+					} else {
+						return new ResponseEntity<>(
+							detailRepository.save(
+								new Detail(
+									product,
+									cart,
+									request.getQuantity()
+								)), HttpStatus.CREATED
+						);
+					}
 				} else {
 					return new ResponseEntity<>(
 						"product is not published",

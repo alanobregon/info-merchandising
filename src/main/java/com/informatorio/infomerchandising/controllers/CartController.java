@@ -24,8 +24,8 @@ public class CartController {
 		return cartService.findCartByUser(id);
 	}
 
-	@PostMapping
+	@PutMapping
 	public ResponseEntity<?> addProductToCart(@PathVariable("id") Long id, @Valid @RequestBody DetailRequest request) {
-		return cartService.addProductToCart(id, request);
+		return cartService.addOrUpdateProductToCart(id, request);
 	}
 }
