@@ -56,7 +56,7 @@ public class UserService {
 			ResponseEntity.ok(
 				userRepository.findAllByCity(city)
 			) : new ResponseEntity<>(
-				"city not found",
+			"city not found",
 			HttpStatus.NOT_FOUND
 		);
 	}
@@ -73,7 +73,7 @@ public class UserService {
 			ResponseEntity.ok(
 				userRepository.findAllByCityAndCreatedAtAfter(city, date)
 			) : new ResponseEntity<>(
-				"city not found",
+			"city not found",
 			HttpStatus.NOT_FOUND
 		);
 	}
@@ -116,7 +116,7 @@ public class UserService {
 			ResponseEntity.ok(
 				user
 			) : new ResponseEntity<>(
-				"user not found",
+			"user not found",
 			HttpStatus.NOT_FOUND
 		);
 	}
@@ -192,14 +192,17 @@ public class UserService {
 						HttpStatus.NOT_FOUND
 					);
 				}
-
-				return ResponseEntity.ok(
-					userRepository.save(user)
-				);
 			}
+
+			return ResponseEntity.ok(
+				userRepository.save(user)
+			);
 		}
 
-		return new ResponseEntity<>("user not found", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(
+			"user not found",
+			HttpStatus.NOT_FOUND
+		);
 	}
 
 	public ResponseEntity<?> deleteById(Long id) {
