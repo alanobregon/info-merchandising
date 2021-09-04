@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+
 @Service
 public class CartService {
 
@@ -85,6 +87,39 @@ public class CartService {
 				} else {
 					return new ResponseEntity<>(
 						"product is not published",
+						HttpStatus.BAD_REQUEST
+					);
+				}
+			} else {
+				return new ResponseEntity<>(
+					"product not found",
+					HttpStatus.NOT_FOUND
+				);
+			}
+		}
+
+		return new ResponseEntity<>(
+			"user not found",
+			HttpStatus.NOT_FOUND
+		);
+	}
+
+	public ResponseEntity<?> removeProductToCart(Long user, Long request) {
+		var cart = findCartByUserId(user);
+		var product = findProductById(request);
+		if (cart != null) {
+			if (product != null) {
+				var detail = findDetailByCartAndProduct(cart, product);
+				if (detail != null) {
+					detailRepository.delete(detail);
+					return ResponseEntity.ok(
+						new HashMap<String, Detail>() {{
+							put("detail has deleted", detail);
+						}}
+					);
+				} else {
+					return new ResponseEntity<>(
+						"do not have this products in cart",
 						HttpStatus.BAD_REQUEST
 					);
 				}

@@ -25,7 +25,12 @@ public class CartController {
 	}
 
 	@PutMapping
-	public ResponseEntity<?> addProductToCart(@PathVariable("id") Long id, @Valid @RequestBody DetailRequest request) {
+	public ResponseEntity<?> addOrUpdateProductToCart(@PathVariable("id") Long id, @Valid @RequestBody DetailRequest request) {
 		return cartService.addOrUpdateProductToCart(id, request);
+	}
+
+	@DeleteMapping(value = "/{product}")
+	public ResponseEntity<?> removeProductToCart(@PathVariable("id") Long id, @PathVariable("product") Long product) {
+		return cartService.removeProductToCart(id, product);
 	}
 }
