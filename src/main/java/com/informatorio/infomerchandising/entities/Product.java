@@ -35,6 +35,10 @@ public class Product {
 	@OneToMany(mappedBy = "product", orphanRemoval = true)
 	private List<Detail> details;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "product")
+	private List<OrderDetail> orderDetails = new ArrayList<>();
+
 	@CreationTimestamp
 	@Column(nullable = false)
 	private LocalDate createdAt;
@@ -110,6 +114,14 @@ public class Product {
 
 	public void setDetails(List<Detail> details) {
 		this.details = details;
+	}
+
+	public List<OrderDetail> getOrderDetails() {
+		return orderDetails;
+	}
+
+	public void setOrderDetails(List<OrderDetail> orderDetails) {
+		this.orderDetails = orderDetails;
 	}
 
 	public LocalDate getCreatedAt() {

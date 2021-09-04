@@ -7,6 +7,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -36,6 +38,10 @@ public class User {
 	@JoinColumn(name = "city_id")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private City city;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", orphanRemoval = true)
+	private List<Order> orders = new ArrayList<>();
 
 	@JsonIgnore
 	@OneToOne(mappedBy = "user")
@@ -99,6 +105,14 @@ public class User {
 
 	public void setCity(City city) {
 		this.city = city;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
 	}
 
 	public Cart getCart() {
