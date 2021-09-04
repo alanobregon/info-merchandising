@@ -1,9 +1,12 @@
 package com.informatorio.infomerchandising.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -28,6 +31,10 @@ public class Product {
 	@Column(nullable = false)
 	private Boolean published;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "product", orphanRemoval = true)
+	private List<Detail> details;
+
 	@CreationTimestamp
 	@Column(nullable = false)
 	private LocalDate createdAt;
@@ -41,6 +48,7 @@ public class Product {
 		this.description = description;
 		this.price = price;
 		this.published = published;
+		this.details = new ArrayList<>();
 	}
 
 	public Product(String name, String description, Double price, String content, Boolean published) {
@@ -49,6 +57,7 @@ public class Product {
 		this.price = price;
 		this.content = content;
 		this.published = published;
+		this.details = new ArrayList<>();
 	}
 
 	public Long getId() {
@@ -93,6 +102,14 @@ public class Product {
 
 	public void setPublished(Boolean published) {
 		this.published = published;
+	}
+
+	public List<Detail> getDetails() {
+		return details;
+	}
+
+	public void setDetails(List<Detail> details) {
+		this.details = details;
 	}
 
 	public LocalDate getCreatedAt() {
