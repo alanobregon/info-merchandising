@@ -20,16 +20,19 @@ public class CartController {
 	}
 
 	@GetMapping
+	@ResponseBody
 	public ResponseEntity<?> findByUser(@PathVariable("id") Long id) {
 		return cartService.findCartByUser(id);
 	}
 
 	@PutMapping
+	@ResponseBody
 	public ResponseEntity<?> addOrUpdateProductToCart(@PathVariable("id") Long id, @Valid @RequestBody DetailRequest request) {
 		return cartService.addOrUpdateProductToCart(id, request);
 	}
 
 	@DeleteMapping(value = "/{product}")
+	@ResponseBody
 	public ResponseEntity<?> removeProductToCart(@PathVariable("id") Long id, @PathVariable("product") Long product) {
 		return cartService.removeProductToCart(id, product);
 	}
