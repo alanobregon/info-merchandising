@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class OrderService {
@@ -70,14 +72,19 @@ public class OrderService {
 							user
 						));
 
-					details.forEach((detail) ->
-						orderDetailRepository.save(new OrderDetail(
-							detail.getProduct().getPrice(),
-							detail.getQuantity(),
-							detail.getProduct(),
-							order
-						))
-					);
+					List<OrderDetail> orderDetails = new ArrayList<>() {{
+						details.forEach((detail -> {
+							add(new OrderDetail(
+								detail.getProduct().getPrice(),
+								detail.getQuantity(),
+								detail.getProduct(),
+								order
+							));
+						}));
+					}};
+
+					orderDetailRepository.saveAll(orderDetails);
+					order.setOrderDetails(orderDetails);
 
 					detailRepository.deleteAll(details);
 					return ResponseEntity.ok(order);

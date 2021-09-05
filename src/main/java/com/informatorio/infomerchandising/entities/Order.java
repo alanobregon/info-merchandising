@@ -20,7 +20,7 @@ public class Order {
 	@Column(nullable = false, length = 200)
 	private String observation;
 
-	@OneToMany(mappedBy = "order", orphanRemoval = true)
+	@OneToMany(mappedBy = "order")
 	private List<OrderDetail> orderDetails = new ArrayList<>();
 
 	@ManyToOne
