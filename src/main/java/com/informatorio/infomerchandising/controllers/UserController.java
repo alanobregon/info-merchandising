@@ -22,6 +22,7 @@ public class UserController {
 	}
 
 	@GetMapping
+	@ResponseBody
 	public ResponseEntity<?> findAll(
 		@RequestParam(required = false) Long city,
 		@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate created_at) {
@@ -38,21 +39,25 @@ public class UserController {
 	}
 
 	@PostMapping
+	@ResponseBody
 	public ResponseEntity<?> save(@Valid @RequestBody UserRequest request) {
 		return userService.save(request);
 	}
 
 	@GetMapping(value = "/{id}")
+	@ResponseBody
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		return userService.findById(id);
 	}
 
 	@PutMapping(value = "/{id}")
+	@ResponseBody
 	public ResponseEntity<?> updateById(@PathVariable("id") Long id, @RequestBody UserRequest request) {
 		return userService.updateById(id, request);
 	}
 
 	@DeleteMapping(value = "/{id}")
+	@ResponseBody
 	public ResponseEntity<?> deleteById(@PathVariable("id") Long id) {
 		return userService.deleteById(id);
 	}
