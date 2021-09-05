@@ -602,15 +602,6 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
 							"raw": "http://localhost:8080/users/1/cart/2",
 							"protocol": "http",
@@ -692,15 +683,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/users/1/orders",
+							"raw": "http://localhost:8080/orders",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"users",
-								"1",
 								"orders"
 							]
 						}
